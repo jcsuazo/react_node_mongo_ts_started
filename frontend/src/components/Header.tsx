@@ -1,14 +1,13 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import SearchBox from './SearchBox';
 import { logout } from '../state/action-creators/userActions';
-import { State } from '../store';
-
-const Header = () => {
-  const userLogin = useSelector((state: State) => state.userLogin);
+import { useTypedSelector } from '../hooks/useTypedSelector';
+const Header: React.FC = () => {
+  const userLogin = useTypedSelector((state) => state.userLogin);
   const dispatch = useDispatch();
   const { userInfo } = userLogin;
 
@@ -40,7 +39,6 @@ const Header = () => {
       </Nav.Link>
     </LinkContainer>
   );
-
   return (
     <header>
       <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
@@ -50,7 +48,15 @@ const Header = () => {
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
-            <Route render={({ history }) => <SearchBox history={history} />} />
+            <Route
+              render={({ history, location, match }) => (
+                <SearchBox
+                  history={history}
+                  location={location}
+                  match={match}
+                />
+              )}
+            />
             <Nav className='ml-auto'>
               {userInfo ? loggedHTMl : guestHTML}
               {userInfo && userInfo.isAdmin && adminMenuHTMl}

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
-
-const SearchBox = ({ history }) => {
+import { RouteComponentProps } from 'react-router-dom';
+const SearchBox: React.FC<RouteComponentProps> = ({ history }) => {
   const [keyword, setKeyword] = useState('');
   //HANDLER
-  const submitHandler = (e) => {
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (keyword.trim()) {
       history.push(`/search/${keyword}`);

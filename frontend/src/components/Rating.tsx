@@ -1,7 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
-const Rating = ({ value, text, color }) => {
+// import PropTypes from 'prop-types';
+interface ChildProps {
+  value: number;
+  text: string;
+  color: string;
+}
+const Rating: React.FC<ChildProps> = ({ value, text, color = '#f8e825' }) => {
   let stars = [];
   for (let i = 0; i < 5; i++) {
     stars.push(
@@ -27,12 +31,12 @@ const Rating = ({ value, text, color }) => {
     </div>
   );
 };
-Rating.defaultProps = {
-  color: '#f8e825',
-};
-Rating.propTypes = {
-  value: PropTypes.number.isRequired,
-  text: PropTypes.string.isRequired,
-  color: PropTypes.string,
-};
+// Rating.defaultProps = {
+//   color: '#f8e825',
+// };
+// Rating.propTypes = {
+//   value: PropTypes.number.isRequired,
+//   text: PropTypes.string.isRequired,
+//   color: PropTypes.string,
+// };
 export default Rating;

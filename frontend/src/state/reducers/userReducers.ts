@@ -6,18 +6,18 @@ import {
   USER_LIST_ACTION,
   USER_REQUEST_ACTION,
   USER_UPDATE_ACTION,
-} from '../../constants/userConstants';
+} from '../action-types/index';
 import { UserAction } from '../actions/UserAction';
-type User =
-  | {
-      name: string;
-      email: string;
-      password: string;
-      isAdmin: boolean;
-    }
-  | {};
-interface UserState {
-  userInfo?: any;
+export type User = {
+  name?: string;
+  _id?: string;
+  email?: string;
+  password?: string;
+  isAdmin?: boolean;
+  token?: string;
+};
+export interface UserState {
+  userInfo?: User;
   loading: boolean;
   error?: string | null;
   data?: User | {};

@@ -7,14 +7,13 @@ import {
   USER_REQUEST_ACTION,
   USER_UPDATE_PROFILE_ACTION,
 } from '../action-types';
-type User =
-  | {
-      name: string;
-      email: string;
-      password: string;
-      isAdmin: boolean;
-    }
-  | {};
+type User = {
+  _id?: string;
+  name?: string;
+  email?: string;
+  password?: string;
+  isAdmin?: boolean;
+};
 /**
  * User Login
  */

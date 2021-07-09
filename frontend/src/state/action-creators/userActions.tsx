@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { Dispatch } from 'react';
-import { State } from '../../store';
 // import { Action } from '../../interface/userInterface';
 import { UserAction } from '../actions/UserAction';
 import {
@@ -11,9 +10,11 @@ import {
   USER_LIST_ACTION,
   USER_REQUEST_ACTION,
   USER_UPDATE_ACTION,
-} from '../../constants/userConstants';
+} from '../action-types/index';
+import { RootState } from '../reducers';
+import { User } from '../reducers/userReducers';
 
-type GetState = () => State;
+type GetState = () => RootState;
 
 export const login =
   (email: string, password: string) =>
@@ -108,10 +109,10 @@ export const getUserDetails =
       });
       const {
         userLogin: { userInfo },
-      }: any = getState();
+      } = getState();
       const config = {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo?.token}`,
           'Content-Type': 'application/json',
         },
       };
@@ -140,11 +141,11 @@ export const updateUserProfile =
       });
       const {
         userLogin: { userInfo },
-      }: any = getState();
+      } = getState();
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo?.token}`,
         },
       };
       const { data } = await axios.put(`/api/users/profile`, user, config);
@@ -171,11 +172,11 @@ export const listUsers =
       });
       const {
         userLogin: { userInfo },
-      }: any = getState();
+      } = getState();
 
       const config = {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo?.token}`,
         },
       };
       const { data } = await axios.get(`/api/users`, config);
@@ -208,7 +209,7 @@ export const deleteUser =
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo?.token}`,
         },
       };
       await axios.delete(`/api/users/${id}`, config);
@@ -227,19 +228,20 @@ export const deleteUser =
   };
 
 export const updateUser =
-  (user: any) => async (dispatch: Dispatch<UserAction>, getState: GetState) => {
+  (user: User) =>
+  async (dispatch: Dispatch<UserAction>, getState: GetState) => {
     try {
       dispatch({
         type: USER_UPDATE_ACTION.USER_UPDATE_REQUEST,
       });
       const {
         userLogin: { userInfo },
-      }: any = getState();
+      } = getState();
 
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo?.token}`,
         },
       };
       const { data } = await axios.put(`/api/users/${user._id}`, user, config);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
@@ -9,9 +9,9 @@ import {
   getUserDetails,
   updateUser,
 } from '../state/action-creators/userActions';
-import { USER_UPDATE_ACTION } from '../constants/userConstants';
 import RouteComponentsPropsInterface from '../interface/RouteComponentsPropsInterface';
-import { State } from '../store';
+import { useTypedSelector } from '../hooks/useTypedSelector';
+import { USER_UPDATE_ACTION } from '../state/action-types';
 
 const UserEditScreen: React.FC<RouteComponentsPropsInterface> = ({
   match,
@@ -26,10 +26,10 @@ const UserEditScreen: React.FC<RouteComponentsPropsInterface> = ({
 
   const dispatch = useDispatch();
 
-  const userDetails = useSelector((state: State) => state.userDetails);
+  const userDetails = useTypedSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
 
-  const userUpdate = useSelector((state: State) => state.userUpdate);
+  const userUpdate = useTypedSelector((state) => state.userUpdate);
   const {
     loading: loadingUpdate,
     error: errorUpdate,
@@ -41,12 +41,12 @@ const UserEditScreen: React.FC<RouteComponentsPropsInterface> = ({
       dispatch({ type: USER_UPDATE_ACTION.USER_UPDATE_RESET });
       history.push('/admin/userlist');
     } else {
-      if (!user.name || user._id !== userId) {
+      if (user === undefined || !user.name || user._id !== userId) {
         dispatch(getUserDetails(userId));
       } else {
-        setName(user.name);
-        setEmail(user.email);
-        setIsAdmin(user.isAdmin);
+        if (user.name) setName(user.name);
+        if (user.email) setEmail(user.email);
+        if (user.isAdmin) setIsAdmin(user.isAdmin);
       }
     }
   }, [dispatch, user, userId, successUpdate, history]);

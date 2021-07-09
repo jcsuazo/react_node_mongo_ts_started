@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import {
@@ -8,7 +8,7 @@ import {
   updateUserProfile,
 } from '../state/action-creators/userActions';
 import RouteComponentsPropsInterface from '../interface/RouteComponentsPropsInterface';
-import { State } from '../store';
+import { useTypedSelector } from '../hooks/useTypedSelector';
 
 const ProfileScreen: React.FC<RouteComponentsPropsInterface> = ({
   location,
@@ -23,14 +23,14 @@ const ProfileScreen: React.FC<RouteComponentsPropsInterface> = ({
 
   const dispatch = useDispatch();
 
-  const userDetails = useSelector((state: State) => state.userDetails);
+  const userDetails = useTypedSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
 
-  const userLogin = useSelector((state: State) => state.userLogin);
+  const userLogin = useTypedSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const userUpdateProfile = useSelector(
-    (state: State) => state.userUpdateProfile,
+  const userUpdateProfile = useTypedSelector(
+    (state) => state.userUpdateProfile,
   );
   const { success } = userUpdateProfile;
 
@@ -38,11 +38,11 @@ const ProfileScreen: React.FC<RouteComponentsPropsInterface> = ({
     if (!userInfo) {
       history.push('/login');
     } else {
-      if (!user.name) {
+      if (!user) {
         dispatch(getUserDetails('profile'));
       } else {
-        setName(user.name);
-        setEmail(user.email);
+        if (user.name) setName(user.name);
+        if (user.email) setEmail(user.email);
       }
     }
   }, [dispatch, history, userInfo, user]);
@@ -54,7 +54,7 @@ const ProfileScreen: React.FC<RouteComponentsPropsInterface> = ({
     if (password !== confirmPassword) {
       setMessage('Passwords do not match');
     } else {
-      dispatch(updateUserProfile({ id: user._id, name, email, password }));
+      dispatch(updateUserProfile({ id: user?._id, name, email, password }));
     }
   };
   return (

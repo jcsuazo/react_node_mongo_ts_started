@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 import { register } from '../state/action-creators/userActions';
 import RouteComponentsPropsInterface from '../interface/RouteComponentsPropsInterface';
-import { State } from '../store';
+import { useTypedSelector } from '../hooks/useTypedSelector';
 
 const RegisterScreen: React.FC<RouteComponentsPropsInterface> = ({
   location,
@@ -22,7 +22,7 @@ const RegisterScreen: React.FC<RouteComponentsPropsInterface> = ({
 
   const dispatch = useDispatch();
 
-  const userRegister = useSelector((state: State) => state.userRegister);
+  const userRegister = useTypedSelector((state) => state.userRegister);
   const { loading, error, userInfo } = userRegister;
   // Redirect
   let redirect = location.search ? location.search.split('=')[1] : '/';
