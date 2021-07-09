@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { Dispatch } from 'react';
-import { State } from '../store';
-import { Action } from '../interface/userInterface';
+import { State } from '../../store';
+// import { Action } from '../../interface/userInterface';
+import { UserAction } from '../actions/UserAction';
 import {
   USER_LOGIN_ACTION,
   USER_REGISTER_ACTION,
@@ -10,13 +11,13 @@ import {
   USER_LIST_ACTION,
   USER_REQUEST_ACTION,
   USER_UPDATE_ACTION,
-} from '../constants/userConstants';
+} from '../../constants/userConstants';
 
 type GetState = () => State;
 
 export const login =
   (email: string, password: string) =>
-  async (dispatch: Dispatch<Action>, getState: GetState) => {
+  async (dispatch: Dispatch<UserAction>, getState: GetState): Promise<void> => {
     try {
       dispatch({
         type: USER_LOGIN_ACTION.USER_LOGIN_REQUEST,
@@ -51,7 +52,7 @@ export const login =
   };
 export const register =
   (name: string, email: string, password: string) =>
-  async (dispatch: Dispatch<Action>) => {
+  async (dispatch: Dispatch<UserAction>) => {
     try {
       dispatch({
         type: USER_REGISTER_ACTION.USER_REGISTER_REQUEST,
@@ -90,7 +91,7 @@ export const register =
     }
   };
 
-export const logout = () => (dispatch: Dispatch<Action>) => {
+export const logout = () => (dispatch: Dispatch<UserAction>) => {
   localStorage.removeItem('userInfo');
   dispatch({ type: USER_LOGIN_ACTION.USER_LOGOUT });
   dispatch({ type: USER_REGISTER_ACTION.USER_REGISTER_LOGOUT });
@@ -99,14 +100,15 @@ export const logout = () => (dispatch: Dispatch<Action>) => {
 };
 
 export const getUserDetails =
-  (id: string) => async (dispatch: Dispatch<Action>, getState: GetState) => {
+  (id: string) =>
+  async (dispatch: Dispatch<UserAction>, getState: GetState) => {
     try {
       dispatch({
         type: USER_DETAILS_ACTION.USER_DETAILS_REQUEST,
       });
       const {
         userLogin: { userInfo },
-      } = getState();
+      }: any = getState();
       const config = {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
@@ -130,7 +132,8 @@ export const getUserDetails =
   };
 
 export const updateUserProfile =
-  (user: object) => async (dispatch: Dispatch<Action>, getState: GetState) => {
+  (user: object) =>
+  async (dispatch: Dispatch<UserAction>, getState: GetState) => {
     try {
       dispatch({
         type: USER_UPDATE_PROFILE_ACTION.USER_UPDATE_PROFILE_REQUEST,
@@ -161,7 +164,7 @@ export const updateUserProfile =
   };
 
 export const listUsers =
-  () => async (dispatch: Dispatch<Action>, getState: GetState) => {
+  () => async (dispatch: Dispatch<UserAction>, getState: GetState) => {
     try {
       dispatch({
         type: USER_LIST_ACTION.USER_LIST_REQUEST,
@@ -192,14 +195,15 @@ export const listUsers =
   };
 
 export const deleteUser =
-  (id: string) => async (dispatch: Dispatch<Action>, getState: GetState) => {
+  (id: string) =>
+  async (dispatch: Dispatch<UserAction>, getState: GetState) => {
     try {
       dispatch({
         type: USER_REQUEST_ACTION.USER_DELETE_REQUEST,
       });
       const {
         userLogin: { userInfo },
-      }: any = getState();
+      } = getState();
 
       const config = {
         headers: {
@@ -223,7 +227,7 @@ export const deleteUser =
   };
 
 export const updateUser =
-  (user: any) => async (dispatch: Dispatch<Action>, getState: GetState) => {
+  (user: any) => async (dispatch: Dispatch<UserAction>, getState: GetState) => {
     try {
       dispatch({
         type: USER_UPDATE_ACTION.USER_UPDATE_REQUEST,

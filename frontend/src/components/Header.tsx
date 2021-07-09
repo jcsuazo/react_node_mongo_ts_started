@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import SearchBox from './SearchBox';
-import { logout } from '../actions/userActions';
+import { logout } from '../state/action-creators/userActions';
+import { State } from '../store';
 
 const Header = () => {
-  const userLogin = useSelector((state) => state.userLogin);
+  const userLogin = useSelector((state: State) => state.userLogin);
   const dispatch = useDispatch();
   const { userInfo } = userLogin;
 

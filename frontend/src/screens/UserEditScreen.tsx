@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
-import { getUserDetails, updateUser } from '../actions/userActions';
+import {
+  getUserDetails,
+  updateUser,
+} from '../state/action-creators/userActions';
 import { USER_UPDATE_ACTION } from '../constants/userConstants';
 import RouteComponentsPropsInterface from '../interface/RouteComponentsPropsInterface';
 import { State } from '../store';

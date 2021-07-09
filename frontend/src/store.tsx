@@ -9,9 +9,9 @@ import {
   userListReducer,
   userDeleteReducer,
   userUpdateReducer,
-} from './reducers/userReducers';
+} from './state/reducers/userReducers';
 
-const reducer: any = combineReducers({
+const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
